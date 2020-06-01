@@ -19,10 +19,35 @@
               {{ odd }}
           </li>
         </div>
-        <div *ngIf="!onlyOdd">
-          <!-- Similarly use of ngClass attribute directive applying 'odd' CSS
+        <!-- Similarly use of ngClass attribute directive applying 'odd' CSS
                class style only if the number 'even' is 0 when deviced by 2.  
                Hence {odd: even % 2 !== 0}. -->
+        <!-- <div *ngIf="!onlyOdd">
+          <li 
+            class="list-group-item"
+            [ngClass]="{odd: even % 2 !== 0}"
+            [ngStyle]="{backgroundColor: even % 2 !== 0 ? 'yellow' : 'transparent'}"
+            *ngFor="let even of evenNumbers">
+              {{ even }}
+          </li>
+        </div> -->
+        <!-- here, instead of using *ngIf, we use ngIf with property binding, hence [], and ng-template.
+             If you use * in front of ngIf, Angular converts that to this. -->
+        <!-- <ng-template [ngIf]="!onlyOdd">
+          <div>
+            <li 
+            class="list-group-item"
+            [ngClass]="{odd: even % 2 !== 0}"
+            [ngStyle]="{backgroundColor: even % 2 !== 0 ? 'yellow' : 'transparent'}"
+            *ngFor="let even of evenNumbers">
+              {{ even }}
+          </li>
+          </div>
+        </ng-template> -->
+        <!-- now we use our own structural directive appUnless.  Note that * is important
+             as this is structural directive we created and now we check for onlyOdd instead
+             for !onlyOdd since out custom directive checks that already. -->
+        <div *appUnless="onlyOdd">
           <li 
             class="list-group-item"
             [ngClass]="{odd: even % 2 !== 0}"
@@ -36,10 +61,17 @@
            since we made our selector of this class be an attribute selector. -->
       <p appBasicHighlight>Style me with basic directive</p>
       <!-- and using appBeterHighlight directive -->
-      <p appBetterHighlight>Style me with a better directive</p>
+      <p [appBetterHighlight]="'red'" defaultColor="yellow">Style me with a better directive</p>
       <ng-template [ngIf]="onlyOdd">
         <p>Only odd</p>
       </ng-template>
+      <!-- Here we use ngSwitch with property binding, so no * at this point. -->
+      <div [ngSwitch]="value">
+        <p *ngSwitchCase="5">Value is 5</p>
+        <p *ngSwitchCase="10">Value is 10</p>
+        <p *ngSwitchCase="100">Value is 100</p>
+        <p *ngSwitchDefault>Value is Default</p>
+      </div>
     </div>
   </div>
 </div>
